@@ -1,0 +1,34 @@
+$mv1 = <<-'SCRIPT'
+service firewalld start
+SCRIPT
+$mv2 = <<-'SCRIPT'
+service vsftpd start
+service sendmail start
+service dovecot start
+SCRIPT
+$mv3 = <<-'SCRIPT'
+service named start
+service httpd start
+SCRIPT
+Vagrant.configure("2") do |config|
+config.vm.define :servidor1 do |servidor1|
+servidor1.vm.box = "bento/centos-7.9"
+servidor1.vm.network :private_network, ip: "192.168.50.2"
+servidor1.vm.hostname = "servidor1"
+servidor1.vm.provision "shell", inline: $mv2
+end
+config.vm.define :servidor2 do |servidor2|
+servidor2.vm.box = "bento/centos-7.9"
+servidor2.vm.network :private_network, ip: "192.168.50.3"
+servidor2.vm.hostname = "servidor2"
+servidor2.vm.provision "shell", inline: $mv3
+end
+config.vm.define :firewall do |firewall|
+firewall.vm.box = "bento/centos-7.9"
+firewall.vm.network :public_network, ip: "192.168.1.50"
+firewall.vm.network :private_network, ip: "192.168.50.4"
+firewall.vm.network :forwarded_port, guest: 80, host: 8080
+firewall.vm.hostname = "firewall"
+firewall.vm.provision "shell", inline: $mv1
+end
+end

@@ -1,0 +1,17 @@
+$ORIGIN troyanos.com.
+$TTL 3H
+@	IN SOA	servidor3.troyanos.com.	root@troyanos.com. (
+					0	; serial
+					1D	; refresh
+					1H	; retry
+					1W	; expire
+					3H )	; minimum
+@	IN	NS	servidor3.troyanos.com.
+@       IN      NS      servidor2.troyanos.com.
+@       IN      NS      firewall.troyanos.com.
+@       IN      NS      smart.troyanos.com.
+servidor3	IN	A	192.168.50.3
+servidor2       IN      A       192.168.50.2
+firewall	IN	A	192.168.0.22
+smart        IN      A       192.168.0.11
+www	IN	CNAME	servidor3
